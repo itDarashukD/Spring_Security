@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         User.UserBuilder userBuilder = User.withDefaultPasswordEncoder(); //дефолтный создатель паролей
 
         auth.inMemoryAuthentication()
