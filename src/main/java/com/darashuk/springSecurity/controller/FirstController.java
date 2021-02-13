@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class FirstController {
 
-    @GetMapping
+    @GetMapping("/")
     public String showAllEmployees(){
 
-        return "view_for_all_employeers";
+        return "view_for_all_employees";
     }
 
     @GetMapping("/hr_info")

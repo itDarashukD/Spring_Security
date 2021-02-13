@@ -11,6 +11,6 @@ only for HR staff
 <br/><br/>
 <input type="button" value="performance" onclick="window.location.href = 'manager_info'">
 
-only for HR staff
+only for Manager
 </body>
 </html>
