@@ -1,25 +1,39 @@
 package com.darashuk.springSecurity.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private DataSource dataSource;
+    @Autowired
+
+    public MySecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override  //сделана возможность аутентификации для перечисленных пользователей
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        User.UserBuilder userBuilder = User.withDefaultPasswordEncoder(); //дефолтный создатель паролей
-
-        auth.inMemoryAuthentication()
-                .withUser(userBuilder.username("dima").password("dima").roles("EMPLOYEE"))
-                .withUser(userBuilder.username("vika").password("vika").roles("HR"))
-                .withUser(userBuilder.username("vlad").password("vlad").roles("MANAGER","HR"));
-
+        //теперь спринг знает, что инфу о эзерах,их ролях нужно брать из БД
+        auth.jdbcAuthentication().dataSource(dataSource);
     }
+
+//        User.UserBuilder userBuilder = User.withDefaultPasswordEncoder(); //дефолтный создатель паролей
+//
+//        auth.inMemoryAuthentication()
+//                .withUser(userBuilder.username("dima").password("dima").roles("EMPLOYEE"))
+//                .withUser(userBuilder.username("vika").password("vika").roles("HR"))
+//                .withUser(userBuilder.username("vlad").password("vlad").roles("MANAGER","HR"));
+//
+//    }
     //сделана возможность авторизации для перечисленных пользователей для конкретных ссылок(кнопой к браузере)
     @Override
     protected void configure(HttpSecurity http) throws Exception {
